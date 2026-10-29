@@ -1,0 +1,14 @@
+{
+  "name": "civicconnect-ai",
+  "version": "1.0.0",
+  "description": "CivicConnect AI - civic issue reporting platform",
+  "private": true,
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "node --test backend/test/api.test.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

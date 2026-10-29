@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CivicConnect <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="admin-dashboard.html" class="active">Dashboard</a>
+            <a href="admin-reports.html">Reports</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="#" id="adminLogout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+
+        <div class="admin-head">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Monitor and manage civic issues reported by citizens.</p>
+            </div>
+            <a class="admin-btn" href="admin-reports.html" style="text-decoration:none">Manage all reports</a>
+        </div>
+
+        <section class="admin-stats">
+            <div class="admin-stat"><h3>Total Reports</h3><p id="totalReports">0</p></div>
+            <div class="admin-stat"><h3>Pending</h3><p id="pendingReports">0</p></div>
+            <div class="admin-stat"><h3>In Progress</h3><p id="progressReports">0</p></div>
+            <div class="admin-stat"><h3>High Priority (open)</h3><p id="highPriority">0</p></div>
+            <div class="admin-stat"><h3>Resolved</h3><p id="resolvedReports">0</p></div>
+            <div class="admin-stat"><h3>Citizens</h3><p id="citizenCount">0</p></div>
+        </section>
+
+        <section class="admin-card">
+            <h2>Recent Reports</h2>
+            <p class="sub">Latest civic issues submitted by citizens.</p>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="recentTable"></table>
+            </div>
+            <div id="recentMessage" class="admin-empty">Loading...</div>
+        </section>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        (function () {
+            if (!window.AdminUI) return;
+
+            var message = document.getElementById("recentMessage");
+            var table = document.getElementById("recentTable");
+
+            function set(id, value) {
+                document.getElementById(id).textContent = value;
+            }
+
+            function load() {
+                CivicAPI.adminStats().then(function (s) {
+                    set("totalReports", s.total);
+                    set("pendingReports", s.pending);
+                    set("progressReports", s.inProgress);
+                    set("highPriority", s.highPriority);
+                    set("resolvedReports", s.resolved);
+                    set("citizenCount", s.citizens);
+                }).catch(function () {});
+
+                CivicAPI.adminReports({ pageSize: 8 }).then(function (result) {
+                    if (!result.items.length) {
+                        table.replaceChildren();
+                        message.hidden = false;
+                        message.textContent =
+                            "No reports yet. Citizen complaints will appear here after submission.";
+                        return;
+                    }
+
+                    message.hidden = true;
+                    AdminUI.reportTable(table, result.items, {
+                        editable: true, onChange: load
+                    });
+                }).catch(function (error) {
+                    message.hidden = false;
+                    message.className = "admin-error";
+                    message.textContent = error.message;
+                });
+            }
+
+            load();
+        })();
+    </script>
+    <script src="extras.js"></script>
+
+</body>
+
+</html>

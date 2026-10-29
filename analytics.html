@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CivicConnect <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-reports.html">Reports</a>
+            <a href="analytics.html" class="active">Analytics</a>
+            <a href="#" id="adminLogout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+
+        <div class="admin-head">
+            <div>
+                <h1>Analytics</h1>
+                <p>How reports are distributed and how quickly they are resolved.</p>
+            </div>
+        </div>
+
+        <section class="admin-stats">
+            <div class="admin-stat"><h3>Total Reports</h3><p id="aTotal">0</p></div>
+            <div class="admin-stat"><h3>Resolved</h3><p id="aRate">0%</p></div>
+            <div class="admin-stat"><h3>Avg. Resolution</h3><p id="aAverage">-</p></div>
+            <div class="admin-stat"><h3>Citizens</h3><p id="aCitizens">0</p></div>
+        </section>
+
+        <div id="aMessage" class="admin-empty">Loading...</div>
+
+        <div class="analytics-grid" id="aGrid" hidden>
+            <section class="admin-card">
+                <h2>By category</h2><p class="sub">Which problems are reported most.</p>
+                <div id="aCategory"></div>
+            </section>
+
+            <section class="admin-card">
+                <h2>By status</h2><p class="sub">Where reports are in the process.</p>
+                <div id="aStatus"></div>
+            </section>
+
+            <section class="admin-card">
+                <h2>By priority</h2><p class="sub">Urgency detected from the report.</p>
+                <div id="aPriority"></div>
+            </section>
+
+            <section class="admin-card">
+                <h2>Reports per day</h2><p class="sub">Last 30 days.</p>
+                <div class="day-chart" id="aDays"></div>
+            </section>
+        </div>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        (function () {
+            if (!window.AdminUI) return;
+
+            function bars(id, rows, labelKey, kind) {
+                var box = document.getElementById(id);
+                var max = Math.max.apply(null, rows.map(function (r) { return r.count; }).concat([1]));
+
+                box.replaceChildren();
+
+                if (!rows.length) {
+                    box.appendChild(AdminUI.el("p", "admin-empty", "No data yet."));
+                    return;
+                }
+
+                rows.forEach(function (row) {
+                    var line = AdminUI.el("div", "bar-row");
+                    var track = AdminUI.el("div", "bar-track");
+                    var fill = AdminUI.el("div", "bar-fill" + (kind ? " " + row[labelKey] : ""));
+
+                    fill.style.width = Math.round(row.count / max * 100) + "%";
+                    track.appendChild(fill);
+
+                    line.appendChild(AdminUI.el("span", "", AdminUI.cap(row[labelKey])));
+                    line.appendChild(track);
+                    line.appendChild(AdminUI.el("b", "", String(row.count)));
+                    box.appendChild(line);
+                });
+            }
+
+            Promise.all([CivicAPI.adminStats(), CivicAPI.adminAnalytics()]).then(function (all) {
+                var s = all[0], a = all[1];
+
+                document.getElementById("aTotal").textContent = s.total;
+                document.getElementById("aCitizens").textContent = s.citizens;
+                document.getElementById("aRate").textContent =
+                    s.total ? Math.round(s.resolved / s.total * 100) + "%" : "0%";
+
+                var hours = a.averageResolutionHours;
+
+                document.getElementById("aAverage").textContent =
+                    hours === null ? "-" : hours < 48
+                        ? hours + " h"
+                        : Math.round(hours / 24 * 10) / 10 + " days";
+
+                bars("aCategory", a.byCategory, "category");
+
+                var order = ["Submitted", "Under Review", "In Progress", "Resolved"];
+
+                bars("aStatus", order.map(function (name) {
+                    var found = a.byStatus.filter(function (r) { return r.status === name; })[0];
+
+                    return { status: name, count: found ? found.count : 0 };
+                }), "status");
+
+                bars("aPriority", ["high", "medium", "low"].map(function (name) {
+                    var found = a.byPriority.filter(function (r) { return r.priority === name; })[0];
+
+                    return { priority: name, count: found ? found.count : 0 };
+                }), "priority", true);
+
+                var days = document.getElementById("aDays");
+                var max = Math.max.apply(null, a.perDay.map(function (d) { return d.count; }).concat([1]));
+
+                days.replaceChildren();
+
+                if (!a.perDay.length) {
+                    days.appendChild(AdminUI.el("p", "admin-empty", "No reports in the last 30 days."));
+                }
+
+                a.perDay.forEach(function (d) {
+                    var bar = AdminUI.el("div", "day-bar");
+
+                    bar.style.height = Math.round(d.count / max * 100) + "%";
+                    bar.title = d.day + ": " + d.count;
+                    days.appendChild(bar);
+                });
+
+                document.getElementById("aMessage").hidden = true;
+                document.getElementById("aGrid").hidden = false;
+            }).catch(function (error) {
+                var box = document.getElementById("aMessage");
+
+                box.className = "admin-error";
+                box.textContent = error.message;
+            });
+        })();
+    </script>
+    <script src="extras.js"></script>
+
+</body>
+
+</html>

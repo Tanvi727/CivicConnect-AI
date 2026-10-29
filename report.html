@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report an Issue | CivicConnect AI</title>
+
+    <!-- Check login before displaying the page. -->
+    <script>
+    (function () {
+        "use strict";
+
+        let user = null;
+
+        try {
+            user = JSON.parse(
+                localStorage.getItem("civicCurrentUser")
+            );
+        } catch (error) {
+            user = null;
+        }
+
+        const isLoggedIn = Boolean(
+            user &&
+            typeof user === "object" &&
+            typeof user.email === "string" &&
+            user.email.trim() !== ""
+        );
+
+        if (!isLoggedIn) {
+            sessionStorage.setItem(
+                "civicReturnAfterLogin",
+                "report.html"
+            );
+
+            window.location.replace("login.html");
+        }
+    })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+
+    <style>
+        .report-page {
+            min-height: 100vh;
+            padding: 35px 20px 60px;
+            background: #f3f9f8;
+        }
+
+        .report-nav {
+            max-width: 1200px;
+            margin: 0 auto 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .report-nav a {
+            color: #008b8b;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .report-card {
+            max-width: 1020px;
+            margin: auto;
+            padding: 45px;
+            background: #ffffff;
+            border: 1px solid #e0e8ee;
+            border-radius: 24px;
+        }
+
+        .report-heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .report-heading h1 {
+            color: #173653;
+            font-size: 40px;
+            margin: 0 0 14px;
+        }
+
+        .report-heading p {
+            color: #66758a;
+            font-size: 18px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .report-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .form-group {
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            color: #173653;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 17px 20px;
+            border: 1px solid #d7e2eb;
+            border-radius: 14px;
+            background: #fbfcfd;
+            color: #173653;
+            font: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 155px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: 2px solid #9bd9d2;
+            border-color: #008b8b;
+        }
+
+        .location-row {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .location-row input {
+            flex: 1;
+        }
+
+        .location-button {
+            padding: 12px 15px;
+            border: 1px solid #008b8b;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #008b8b;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .location-button:hover {
+            background: #e9f7f5;
+        }
+
+        .photo-preview {
+            display: none;
+            max-width: 240px;
+            max-height: 200px;
+            object-fit: contain;
+            margin-top: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e8ee;
+        }
+
+        .report-declaration {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #52657a;
+            line-height: 1.6;
+        }
+
+        .report-declaration input {
+            width: 18px;
+            height: 18px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .submit-report {
+            grid-column: 1 / -1;
+            width: 100%;
+            padding: 17px;
+            border: none;
+            border-radius: 12px;
+            background: #008b8b;
+            color: #ffffff;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .submit-report:hover {
+            background: #006f70;
+        }
+
+        .report-message {
+            grid-column: 1 / -1;
+            color: #087b57;
+            font-weight: 600;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 650px) {
+            .report-page {
+                padding: 25px 12px;
+            }
+
+            .report-card {
+                padding: 25px 18px;
+                border-radius: 16px;
+            }
+
+            .report-heading h1 {
+                font-size: 30px;
+            }
+
+            .report-heading p {
+                font-size: 16px;
+            }
+
+            .report-form {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+
+            .form-group.full-width,
+            .submit-report,
+            .report-message {
+                grid-column: 1;
+            }
+
+            .location-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="report-page">
+
+        <nav class="report-nav">
+            <a href="citizen-dashboard.html">← CivicConnect AI</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="#" id="logoutButton">Logout</a>
+        </nav>
+
+        <section class="report-card">
+
+            <header class="report-heading">
+                <h1>Report a Civic Issue</h1>
+
+                <p>
+                    Help improve your community by reporting a problem.
+                    Please provide accurate details so the issue can be understood.
+                </p>
+            </header>
+
+
+            <form id="reportForm" class="report-form">
+
+                <div class="form-group">
+                    <label for="category">Issue Category *</label>
+
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Road Damage">Road Damage</option>
+                        <option value="Streetlight Problem">
+                            Streetlight Problem
+                        </option>
+                        <option value="Garbage/Waste">Garbage/Waste</option>
+                        <option value="Water/Sanitation">
+                            Water/Sanitation
+                        </option>
+                        <option value="Drainage">Drainage</option>
+                        <option value="Public Safety">Public Safety</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="title">Issue Title *</label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="e.g. Broken streetlight"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label for="description">Issue Description *</label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Describe the problem clearly..."
+                        maxlength="2000"
+                        required
+                    ></textarea>
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label for="location">Issue Location *</label>
+
+                    <div class="location-row">
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="Enter the location or address"
+                            maxlength="300"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="locationButton"
+                            class="location-button"
+                        >
+                            Use My Current Location
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label for="photo">Upload Issue Photo</label>
+
+                    <input
+                        type="file"
+                        id="photo"
+                        name="photo"
+                        accept="image/png,image/jpeg,image/webp"
+                    >
+
+                    <img
+                        id="photoPreview"
+                        class="photo-preview"
+                        alt="Selected issue photo preview"
+                    >
+
+                    <small>
+                        Upload a JPG, PNG, or WEBP image under 2 MB.
+                    </small>
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label for="additionalDetails">
+                        Additional Details (Optional)
+                    </label>
+
+                    <textarea
+                        id="additionalDetails"
+                        name="additionalDetails"
+                        placeholder="Add any other useful information..."
+                        maxlength="2000"
+                    ></textarea>
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label class="report-declaration">
+
+                        <input
+                            type="checkbox"
+                            id="declaration"
+                            name="declaration"
+                            required
+                        >
+
+                        <span>
+                            I confirm that the information provided is accurate
+                            to the best of my knowledge.
+                        </span>
+
+                    </label>
+                </div>
+
+
+                <p
+                    id="reportMessage"
+                    class="report-message"
+                    aria-live="polite"
+                ></p>
+
+
+                <button type="submit" class="submit-report">
+                    Submit Issue
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+
+    <script src="extras.js"></script>
+
+</body>
+</html>

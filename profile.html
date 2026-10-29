@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+
+    <style>
+        .profile-page {
+            min-height: 100vh;
+            padding: 45px 20px;
+            background: #f3f9f8;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .profile-heading {
+            margin-bottom: 25px;
+        }
+
+        .profile-heading h1 {
+            color: #173653;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .profile-heading p {
+            color: #66758a;
+            line-height: 1.6;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border: 1px solid #e0e8ee;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e6edf1;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 78px;
+            height: 78px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #d9f1ed;
+            color: #008b8b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .profile-top h2 {
+            color: #173653;
+            margin: 0 0 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-top p {
+            color: #66758a;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-section-title {
+            font-size: 21px;
+            color: #173653;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .detail-item {
+            min-width: 0;
+            padding: 16px;
+            background: #f8fbfc;
+            border: 1px solid #e7eef2;
+            border-radius: 12px;
+        }
+
+        .detail-item label {
+            display: block;
+            color: #6c7c8e;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .detail-item p {
+            color: #173653;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+            margin: 0;
+        }
+
+        .profile-form {
+            display: grid;
+            gap: 18px;
+        }
+
+        .profile-form label {
+            display: block;
+            color: #173653;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .profile-form input {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #d7e2eb;
+            border-radius: 9px;
+            font: inherit;
+            background: #ffffff;
+        }
+
+        .profile-form input:focus {
+            outline: 2px solid #8bd5ce;
+            border-color: #008b8b;
+        }
+
+        .profile-button {
+            display: inline-block;
+            width: fit-content;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 9px;
+            background: #008b8b;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .profile-button:hover {
+            background: #006f70;
+        }
+
+        .profile-message {
+            color: #087b57;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .profile-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-nav a {
+            color: #008b8b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .profile-nav a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .profile-page {
+                padding: 25px 14px;
+            }
+
+            .profile-card {
+                padding: 20px;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-heading h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="profile-page">
+        <div class="profile-container">
+
+            <nav class="profile-nav">
+                <a href="citizen-dashboard.html">← Back to Dashboard</a>
+                <a href="#settings">Settings ↓</a>
+                <a href="my-reports.html">My Reports →</a>
+                <a href="#" id="logoutButton">Logout</a>
+            </nav>
+
+            <header class="profile-heading">
+                <h1>My Profile</h1>
+                <p>
+                    View and manage your personal information and
+                    CivicConnect AI account details.
+                </p>
+            </header>
+
+            <section class="profile-card">
+
+                <div class="profile-top">
+
+                    <div class="profile-avatar" id="profileAvatar">
+                        C
+                    </div>
+
+                    <div>
+                        <h2 id="profileName">Loading profile...</h2>
+                        <p id="profileEmail">Loading email...</p>
+                    </div>
+
+                </div>
+
+                <div class="cc-complete">
+                    <div class="cc-complete-track">
+                        <div class="cc-complete-bar" id="profileCompleteBar"></div>
+                    </div>
+                    <p class="cc-complete-text" id="profileCompleteText"></p>
+                </div>
+
+                <h3 class="profile-section-title">
+                    Personal Information
+                </h3>
+
+                <div class="profile-details">
+
+                    <div class="detail-item">
+                        <label>Full Name</label>
+                        <p id="profileNameDetail">Not available</p>
+                    </div>
+
+                    <div class="detail-item">
+                        <label>Email Address</label>
+                        <p id="profileEmailDetail">Not available</p>
+                    </div>
+
+                    <div class="detail-item">
+                        <label>Mobile Number</label>
+                        <p id="profileMobile">Not provided</p>
+                    </div>
+
+                    <div class="detail-item">
+                        <label>Date of Birth</label>
+                        <p id="profileDOB">Not provided</p>
+                    </div>
+
+                    <div class="detail-item">
+                        <label>Account Type</label>
+                        <p id="profileRole">Citizen</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="profile-card">
+
+                <h3 class="profile-section-title">
+                    Edit Personal Information
+                </h3>
+
+                <form id="profileForm" class="profile-form">
+
+                    <div>
+                        <label for="editName">Full Name</label>
+                        <input
+                            type="text"
+                            id="editName"
+                            name="name"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="editEmail">Email Address</label>
+                        <input
+                            type="email"
+                            id="editEmail"
+                            name="email"
+                            readonly
+                        >
+                    </div>
+
+                    <div>
+                        <label for="editMobile">Mobile Number</label>
+                        <input
+                            type="tel"
+                            id="editMobile"
+                            name="mobile"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="editDOB">Date of Birth</label>
+                        <input
+                            type="date"
+                            id="editDOB"
+                            name="dateOfBirth"
+                        >
+                    </div>
+
+                    <button class="profile-button" type="submit">
+                        Save Changes
+                    </button>
+
+                </form>
+
+                <p
+                    id="profileMessage"
+                    class="profile-message"
+                    aria-live="polite"
+                ></p>
+
+            </section>
+
+
+            <!-- ======================================
+                 SETTINGS AND HELP
+                 ====================================== -->
+            <section class="profile-card" id="settings">
+
+                <h3 class="profile-section-title">Settings</h3>
+
+                <p class="cc-settings-intro">
+                    Personalise how CivicConnect AI looks and works for you. Changes are saved on this device.
+                </p>
+
+                <div class="cc-group">
+                    <h4>Appearance</h4>
+
+                    <div class="cc-row">
+                        <div class="cc-row-label">
+                            Theme
+                            <small>Auto follows your device setting.</small>
+                        </div>
+
+                        <div class="cc-segmented" id="ccTheme" role="group" aria-label="Theme">
+                            <button type="button" data-theme="light" aria-pressed="true">Light</button>
+                            <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+                            <button type="button" data-theme="auto" aria-pressed="false">Auto</button>
+                        </div>
+                    </div>
+
+                    <div class="cc-row">
+                        <div class="cc-row-label">
+                            <label for="ccBrightness">Brightness</label>
+                            <small>Make the page dimmer or brighter.</small>
+                        </div>
+
+                        <div class="cc-slider">
+                            <input type="range" id="ccBrightness" min="60" max="120" step="5" value="100">
+                            <output id="ccBrightnessValue" for="ccBrightness">100%</output>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cc-group">
+                    <h4>Language</h4>
+
+                    <div class="cc-row">
+                        <div class="cc-row-label">
+                            <label for="ccLanguage">Language</label>
+                            <small>Menus, dashboard, profile and settings.</small>
+                        </div>
+
+                        <select id="ccLanguage" class="cc-select">
+                            <option value="en">English</option>
+                            <option value="hi">हिन्दी (Hindi)</option>
+                            <option value="mr">मराठी (Marathi)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="cc-group">
+                    <h4>Accessibility</h4>
+
+                    <div class="cc-row">
+                        <div class="cc-row-label">
+                            <label for="ccMotion">Reduce animations</label>
+                            <small>Turns off movement and transitions.</small>
+                        </div>
+
+                        <span class="cc-switch">
+                            <input type="checkbox" id="ccMotion">
+                            <span></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="cc-group">
+                    <h4>Security</h4>
+
+                    <form id="ccPasswordForm" class="cc-form" autocomplete="off">
+                        <h4 style="margin:0">Change Password</h4>
+
+                        <div>
+                            <label for="ccCurrentPassword">Current password</label>
+                            <input type="password" id="ccCurrentPassword" autocomplete="current-password" required>
+                        </div>
+
+                        <div>
+                            <label for="ccNewPassword">New password</label>
+                            <input type="password" id="ccNewPassword" autocomplete="new-password" minlength="8" required>
+                        </div>
+
+                        <div>
+                            <label for="ccConfirmPassword">Confirm new password</label>
+                            <input type="password" id="ccConfirmPassword" autocomplete="new-password" minlength="8" required>
+                        </div>
+
+                        <button type="submit" class="cc-button">Update Password</button>
+                    </form>
+
+                    <p id="ccPasswordNote" class="cc-note" aria-live="polite"></p>
+                </div>
+
+                <div class="cc-group">
+                    <h4>Data &amp; Privacy</h4>
+
+                    <div class="cc-button-row">
+                        <button type="button" id="ccDownload" class="cc-button secondary">Download my data</button>
+                        <button type="button" id="ccReset" class="cc-button secondary">Reset preferences</button>
+                    </div>
+
+                    <p id="ccPrefNote" class="cc-note" aria-live="polite"></p>
+                </div>
+
+                <div class="cc-group" id="help">
+                    <h4>Help &amp; Support</h4>
+
+                    <div class="cc-button-row" style="margin-bottom:18px">
+                        <button type="button" id="ccOpenBot" class="cc-button">Ask the Help Assistant</button>
+                    </div>
+
+                    <h4 style="font-size:15px">Frequently asked questions</h4>
+
+                    <div class="cc-faq" data-no-i18n>
+                        <details>
+                            <summary>How do I report a civic issue?</summary>
+                            <p>Open Report Issue, choose a category, describe the problem, add the location and a clear photo, then submit. You can follow it from My Reports.</p>
+                        </details>
+
+                        <details>
+                            <summary>How can I check the status of my report?</summary>
+                            <p>Open My Reports. Each report shows its current status: Submitted, Under Review, In Progress or Resolved.</p>
+                        </details>
+
+                        <details>
+                            <summary>Why is my mobile number or date of birth missing?</summary>
+                            <p>Accounts created before these fields were added may not have them. Enter them under Edit Personal Information and press Save Changes.</p>
+                        </details>
+
+                        <details>
+                            <summary>Is my data stored securely?</summary>
+                            <p>In this version your information is kept in your own browser on this device. Use Download my data to keep a copy, and avoid using a shared computer for your account.</p>
+                        </details>
+                    </div>
+
+                    <p class="cc-about">CivicConnect AI · Version 1.0 · © 2026</p>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+    <script src="extras.js"></script>
+</body>
+</html>

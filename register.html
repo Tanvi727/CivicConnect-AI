@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | CivicConnect AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #f1f5f4;
+            color: #183b3b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(20, 60, 55, 0.12);
+        }
+
+        .welcome {
+            padding: 45px 35px;
+            color: white;
+            background: linear-gradient(145deg, #123e43, #138779);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 45px;
+        }
+
+        .brand span {
+            color: #baf2d4;
+        }
+
+        .welcome h1 {
+            font-size: 36px;
+            line-height: 1.2;
+            margin-bottom: 18px;
+        }
+
+        .welcome p {
+            color: #e1f4ef;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .features {
+            margin-top: 35px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .feature {
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+        }
+
+        .form-area {
+            padding: 42px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-area h2 {
+            font-size: 30px;
+            margin-bottom: 9px;
+        }
+
+        .subtitle {
+            color: #71817f;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="date"] {
+            width: 100%;
+            min-height: 47px;
+            padding: 12px 14px;
+            border: 1px solid #d7e1de;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+            color: #183b3b;
+        }
+
+        input:focus {
+            border-color: #168779;
+            box-shadow: 0 0 0 3px rgba(22,135,121,0.12);
+        }
+
+        .password-wrap {
+            display: flex;
+            gap: 8px;
+        }
+
+        .password-wrap input {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .show-btn {
+            border: 1px solid #d7e1de;
+            background: #f7faf9;
+            color: #183b3b;
+            border-radius: 9px;
+            padding: 0 12px;
+            cursor: pointer;
+        }
+
+        .terms {
+            display: flex;
+            gap: 9px;
+            align-items: flex-start;
+            color: #657572;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 2px 0 19px;
+        }
+
+        .terms input {
+            margin-top: 3px;
+        }
+
+        .primary-btn,
+        .google-btn {
+            width: 100%;
+            min-height: 47px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary-btn {
+            border: none;
+            color: white;
+            background: #117f72;
+        }
+
+        .primary-btn:hover {
+            background: #0b675d;
+        }
+
+        .google-btn {
+            margin-top: 12px;
+            border: 1px solid #d7e1de;
+            background: white;
+            color: #253b39;
+        }
+
+        .google-btn:hover {
+            background: #f6f9f8;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #93a09d;
+            font-size: 12px;
+            margin: 20px 0 5px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            background: #e1e8e5;
+            flex: 1;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+            color: #a12626;
+            background: #fff0f0;
+            border: 1px solid #ffd1d1;
+        }
+
+        .message.success {
+            display: block;
+            color: #176647;
+            background: #eaf8f0;
+            border: 1px solid #c5ead5;
+        }
+
+        .login-link {
+            margin-top: 22px;
+            text-align: center;
+            color: #71817f;
+            font-size: 14px;
+        }
+
+        a {
+            color: #117f72;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 12px;
+            }
+
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome {
+                padding: 28px 25px;
+            }
+
+            .brand {
+                margin-bottom: 22px;
+            }
+
+            .welcome h1 {
+                font-size: 29px;
+            }
+
+            .features {
+                margin-top: 20px;
+            }
+
+            .form-area {
+                padding: 28px 22px;
+            }
+        }
+
+        body.dark-mode {
+            background: #101918;
+            color: #e4f0ed;
+        }
+
+        body.dark-mode .page {
+            background: #1a2826;
+        }
+
+        body.dark-mode .form-area {
+            background: #1a2826;
+        }
+
+        body.dark-mode .subtitle,
+        body.dark-mode .login-link {
+            color: #b0c3be;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="email"],
+        body.dark-mode input[type="password"] {
+            background: #233431;
+            color: white;
+            border-color: #435a54;
+        }
+
+        body.dark-mode .show-btn,
+        body.dark-mode .google-btn {
+            background: #233431;
+            color: white;
+            border-color: #435a54;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="page">
+
+        <section class="welcome">
+            <div class="brand">CivicConnect <span>AI</span></div>
+
+            <h1>Be the change your city needs.</h1>
+
+            <p>
+                Create your account to report civic problems,
+                follow your complaints and help build a better community.
+            </p>
+
+            <div class="features">
+                <div class="feature">📍 &nbsp; Report local issues</div>
+                <div class="feature">📋 &nbsp; Track your reports</div>
+                <div class="feature">🤝 &nbsp; Make your voice count</div>
+            </div>
+        </section>
+
+        <section class="form-area">
+
+            <h2>Create Account</h2>
+
+            <p class="subtitle">
+                Join CivicConnect AI and make a difference in your city.
+            </p>
+
+            <div id="message" class="message" role="status"
+                 aria-live="polite"></div>
+
+            <form id="registerForm">
+
+                <div class="field">
+                    <label for="fullName">Full Name</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                        minlength="2"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div><div class="field">
+    <label for="mobile">Mobile Number</label>
+    <input
+        type="tel"
+        id="mobile"
+        placeholder="Enter 10-digit mobile number"
+        inputmode="numeric"
+        autocomplete="tel"
+        pattern="[6-9][0-9]{9}"
+        maxlength="10"
+        required
+    >
+</div>
+
+<div class="field">
+    <label for="dateOfBirth">Date of Birth</label>
+    <input
+        type="date"
+        id="dateOfBirth"
+        autocomplete="bday"
+        required
+    >
+</div>
+
+
+                <div class="field">
+                    <label for="password">Create Password</label>
+
+                    <div class="password-wrap">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="At least 8 characters"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-btn"
+                            data-target="password"
+                        >Show</button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="confirmPassword">Confirm Password</label>
+
+                    <div class="password-wrap">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Enter password again"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-btn"
+                            data-target="confirmPassword"
+                        >Show</button>
+                    </div>
+                </div>
+
+                <label class="terms">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <span>
+                        I agree to use CivicConnect AI responsibly and
+                        provide accurate information in my reports.
+                    </span>
+                </label>
+
+                <button type="submit" class="primary-btn">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div class="divider">OR</div>
+
+            <button type="button" class="google-btn" id="googleButton">
+                Continue with Google
+            </button>
+
+            <p class="login-link">
+                Already have an account?
+                <a href="login.html">Log in</a>
+            </p>
+
+            <p class="back-link">
+                <a href="index.html">← Back to Home</a>
+            </p>
+
+        </section>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        // Apply the saved theme if one exists.
+        if (localStorage.getItem("civicTheme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+
+        const registerForm = document.getElementById("registerForm");
+        const messageBox = document.getElementById("message");
+
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = "message " + type;
+        }
+
+        // Show/hide password buttons.
+        document.querySelectorAll(".show-btn").forEach(function(button) {
+            button.addEventListener("click", function() {
+                const input = document.getElementById(
+                    button.getAttribute("data-target")
+                );
+
+                const shouldShow = input.type === "password";
+
+                input.type = shouldShow ? "text" : "password";
+                button.textContent = shouldShow ? "Hide" : "Show";
+            });
+        });
+
+        // Registration.
+        registerForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value
+                .trim().toLowerCase();
+            const mobile = document.getElementById("mobile").value.trim();
+            const dateOfBirth =
+                document.getElementById("dateOfBirth").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+            if (name.length < 2) {
+                showMessage("Please enter your full name.", "error");
+                return;
+            }
+
+            if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+                showMessage(
+                    "Please enter a valid 10-digit mobile number.",
+                    "error"
+                );
+                return;
+            }
+
+            if (!dateOfBirth || new Date(dateOfBirth) > new Date()) {
+                showMessage(
+                    "Please enter a valid date of birth.",
+                    "error"
+                );
+                return;
+            }
+
+            if (password.length < 8) {
+                showMessage(
+                    "Your password must contain at least 8 characters.",
+                    "error"
+                );
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage(
+                    "Passwords do not match. Please check them.",
+                    "error"
+                );
+                return;
+            }
+
+            const submitButton = registerForm.querySelector("button[type='submit']");
+
+            if (submitButton) submitButton.disabled = true;
+
+            showMessage("Creating your account...", "success");
+
+            CivicAPI.register({
+                name: name,
+                email: email,
+                mobile: mobile,
+                dateOfBirth: dateOfBirth,
+                password: password
+            }).then(function() {
+                showMessage(
+                    "Account created successfully! Redirecting to Login...",
+                    "success"
+                );
+
+                registerForm.reset();
+
+                setTimeout(function() {
+                    window.location.href = "login.html";
+                }, 1200);
+            }).catch(function(error) {
+                const fields = error.fields || {};
+                const first = Object.keys(fields)[0];
+
+                showMessage(
+                    first ? fields[first] : error.message,
+                    "error"
+                );
+
+                if (submitButton) submitButton.disabled = false;
+            });
+        });
+
+        // Google sign-in requires real Google OAuth configuration.
+        document.getElementById("googleButton").addEventListener(
+            "click",
+            function() {
+                showMessage(
+                    "Google sign-in is not connected yet. Please register using your email and password.",
+                    "error"
+                );
+            }
+        );
+    </script>
+
+</body>
+</html>

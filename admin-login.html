@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CivicConnect <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="login.html">Citizen Login</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="thanks-box" style="text-align:left">
+            <h1>Admin Login</h1>
+            <p>Sign in to manage reports, update statuses and view analytics.</p>
+
+            <form class="admin-form" id="adminLoginForm" style="margin-top:18px">
+                <label for="adminEmail">Admin email</label>
+                <input type="email" id="adminEmail" required autocomplete="username"
+                       value="admin@civicconnect.local">
+
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" required autocomplete="current-password">
+
+                <button class="admin-btn" type="submit" id="adminSubmit">Sign in as Admin</button>
+                <div class="admin-note" id="adminMsg" role="status"></div>
+            </form>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var msg = document.getElementById("adminMsg");
+            var button = document.getElementById("adminSubmit");
+
+            if (new URLSearchParams(window.location.search).get("citizen")) {
+                msg.style.color = "#b26a00";
+                msg.textContent =
+                    "You are logged in as a citizen. Sign in below with the admin account to open the admin pages.";
+            }
+
+            // Already signed in as admin: go straight to the dashboard.
+            if (CivicAPI.isAdmin()) {
+                window.location.replace("admin-dashboard.html");
+                return;
+            }
+
+            document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                button.disabled = true;
+                msg.style.color = "";
+                msg.textContent = "Signing in...";
+                CivicAPI.clearSession();
+
+                CivicAPI.login(
+                    document.getElementById("adminEmail").value.trim(),
+                    document.getElementById("adminPassword").value
+                ).then(function (user) {
+                    if (user.role !== "admin") {
+                        CivicAPI.clearSession();
+                        throw new Error("This account is not an administrator. Use the citizen login instead.");
+                    }
+
+                    msg.style.color = "#16845b";
+                    msg.textContent = "Welcome! Opening the admin dashboard...";
+                    window.location.href = "admin-dashboard.html";
+                }).catch(function (error) {
+                    msg.style.color = "#d93025";
+                    msg.textContent = error.message;
+                    button.disabled = false;
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

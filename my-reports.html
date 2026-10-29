@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Reports | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="navbar">
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                CivicConnect <span>AI</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="citizen-dashboard.html">Dashboard</a>
+                <a href="report.html">Report Issue</a>
+                <a href="my-reports.html" class="active">My Reports</a>
+                <a href="profile.html">Profile</a>
+                <a href="#" id="logoutButton">Logout</a>
+            </nav>
+
+        </div>
+    </header>
+
+    <main class="my-reports-page">
+
+        <!-- PAGE INTRODUCTION -->
+        <section class="reports-page-intro">
+
+            <div>
+                <span class="reports-label">CITIZEN ACTIVITY</span>
+
+                <h1>My Reports</h1>
+
+                <p>
+                    View your submitted civic issues and track their
+                    progress towards resolution.
+                </p>
+            </div>
+
+            <a href="report.html" class="new-report-button">
+                + Report New Issue
+            </a>
+
+        </section>
+
+        <!-- SUMMARY CARDS -->
+        <section class="report-summary">
+
+            <article class="summary-card">
+                <span>TOTAL REPORTS</span>
+                <strong id="totalReports">0</strong>
+            </article>
+
+            <article class="summary-card">
+                <span>UNDER REVIEW</span>
+                <strong id="underReviewReports">0</strong>
+            </article>
+
+            <article class="summary-card">
+                <span>IN PROGRESS</span>
+                <strong id="inProgressReports">0</strong>
+            </article>
+
+            <article class="summary-card">
+                <span>RESOLVED</span>
+                <strong id="resolvedReports">0</strong>
+            </article>
+
+        </section>
+
+        <!-- REPORT HISTORY -->
+        <section class="reports-list-card">
+
+            <div class="reports-list-header">
+
+                <div>
+                    <span>REPORT HISTORY</span>
+                    <h2>Your Submitted Issues</h2>
+                    <p id="reportCountText">Loading your reports...</p>
+                </div>
+
+            </div>
+
+            <!-- SEARCH AND FILTER -->
+            <div class="reports-toolbar">
+
+                <label class="reports-search">
+                    <span>Search reports</span>
+
+                    <input
+                        type="search"
+                        id="reportSearch"
+                        placeholder="Search by title, ID or location..."
+                    >
+                </label>
+
+                <label class="reports-filter">
+                    <span>Filter by status</span>
+
+                    <select id="statusFilter">
+                        <option value="all">All statuses</option>
+                        <option value="submitted">Submitted</option>
+                        <option value="under review">Under Review</option>
+                        <option value="in progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </label>
+
+            </div>
+
+            <!-- JAVASCRIPT WILL RENDER REPORTS HERE -->
+            <div id="reportsContainer" class="reports-container">
+
+                <div class="reports-empty">
+                    <div class="reports-empty-icon">📋</div>
+
+                    <h3>Loading reports...</h3>
+
+                    <p>Your submitted reports will appear here.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div>
+                <h3>CivicConnect <span>AI</span></h3>
+
+                <p>
+                    Making civic issue reporting simple,
+                    transparent and trackable.
+                </p>
+            </div>
+
+            <p>© 2026 CivicConnect AI. All rights reserved.</p>
+
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+
+    <script src="extras.js"></script>
+
+</body>
+
+</html>

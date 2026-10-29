@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Details | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CivicConnect <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-reports.html" class="active">Reports</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="#" id="adminLogout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="report-details-page">
+
+        <a href="admin-reports.html" class="back-link">← Back to all reports</a>
+
+        <p id="rvLoading" role="status" style="padding:24px 0;">Loading report...</p>
+
+        <div id="rvContent" hidden>
+
+            <section class="details-header">
+                <div>
+                    <span class="details-label">REPORT DETAILS</span>
+                    <h1 id="rvTitle"></h1>
+                    <p id="rvId"></p>
+                </div>
+                <span id="rvStatus" class="status-badge details-status"></span>
+            </section>
+
+            <section class="details-grid">
+
+                <div class="details-main">
+
+                    <div class="details-card">
+                        <div class="details-card-header">
+                            <span>ISSUE INFORMATION</span>
+                            <h2>Reported Problem</h2>
+                        </div>
+
+                        <div class="detail-row"><span>Reported by</span><strong id="rvReporter"></strong></div>
+                        <div class="detail-row"><span>Category</span><strong id="rvCategory"></strong></div>
+                        <div class="detail-row"><span>Location</span><strong id="rvLocation"></strong></div>
+                        <div class="detail-row"><span>Priority</span><strong id="rvPriority"></strong></div>
+                        <div class="detail-row"><span>Submitted On</span><strong id="rvDate"></strong></div>
+
+                        <div class="detail-description">
+                            <span>Description</span>
+                            <p id="rvDescription"></p>
+                        </div>
+
+                        <div class="detail-description" id="rvExtraBox" hidden>
+                            <span>Additional Details</span>
+                            <p id="rvExtra"></p>
+                        </div>
+                    </div>
+
+                    <div class="details-card">
+                        <div class="details-card-header">
+                            <span>PHOTO EVIDENCE</span>
+                            <h2>Uploaded Image</h2>
+                        </div>
+
+                        <img id="rvPhoto" hidden style="max-width:100%;border-radius:12px;display:block;">
+
+                        <div class="report-photo-placeholder" id="rvPhotoPlaceholder">
+                            <div>📷</div>
+                            <span>No photo was attached</span>
+                        </div>
+                    </div>
+
+                    <div class="details-card">
+                        <div class="details-card-header">
+                            <span>ADMIN ACTION</span>
+                            <h2>Update this report</h2>
+                        </div>
+
+                        <form class="admin-form" id="updateForm">
+                            <label for="uStatus">Status</label>
+                            <select id="uStatus">
+                                <option>Submitted</option>
+                                <option>Under Review</option>
+                                <option>In Progress</option>
+                                <option>Resolved</option>
+                            </select>
+
+                            <label for="uPriority">Priority</label>
+                            <select id="uPriority">
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+
+                            <label for="uNote">Note for the citizen (optional)</label>
+                            <textarea id="uNote" rows="3" maxlength="500"
+                                placeholder="e.g. Repair crew assigned, work starts tomorrow"></textarea>
+
+                            <button class="admin-btn" type="submit" id="uSave">Save changes</button>
+                            <div class="admin-note" id="uNoteMsg" role="status"></div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <aside class="details-sidebar">
+                    <div class="details-card status-card">
+                        <div class="details-card-header">
+                            <span>TRACKING</span>
+                            <h2>Report Status</h2>
+                        </div>
+                        <div class="status-timeline" id="rvTimeline"></div>
+                    </div>
+                </aside>
+
+            </section>
+        </div>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+    <script src="report-view.js"></script>
+    <script>
+        (function () {
+            if (!window.AdminUI) return;
+
+            var id = new URLSearchParams(window.location.search).get("id");
+            var loading = document.getElementById("rvLoading");
+            var msg = document.getElementById("uNoteMsg");
+            var save = document.getElementById("uSave");
+
+            if (!id) {
+                loading.textContent = "No report selected.";
+                return;
+            }
+
+            function show(report) {
+                ReportView.fill(report);
+                document.getElementById("uStatus").value = report.status;
+                document.getElementById("uPriority").value = report.priority;
+            }
+
+            CivicAPI.getReport(id).then(function (report) {
+                show(report);
+                loading.hidden = true;
+                document.getElementById("rvContent").hidden = false;
+            }).catch(function (error) {
+                loading.textContent = error.status === 404 ? "Report not found." : error.message;
+            });
+
+            document.getElementById("updateForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                save.disabled = true;
+                msg.textContent = "";
+
+                CivicAPI.adminUpdateReport(id, {
+                    status: document.getElementById("uStatus").value,
+                    priority: document.getElementById("uPriority").value,
+                    note: document.getElementById("uNote").value.trim()
+                }).then(function (report) {
+                    show(report);
+                    document.getElementById("uNote").value = "";
+                    msg.style.color = "#16845b";
+                    msg.textContent = "Report updated. The citizen can see the new status.";
+                }).catch(function (error) {
+                    msg.style.color = "#d93025";
+                    msg.textContent = error.message;
+                }).then(function () { save.disabled = false; });
+            });
+        })();
+    </script>
+    <script src="extras.js"></script>
+
+</body>
+
+</html>

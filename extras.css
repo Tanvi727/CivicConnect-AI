@@ -1,0 +1,536 @@
+/* ==========================================
+   CIVICCONNECT AI — SETTINGS, HELP AND ASSISTANT
+   Shared by every page that loads extras.js
+   ========================================== */
+
+/* ---------- Dark mode helpers ---------- */
+
+/* The page is inverted by extras.js, so pictures are flipped back. */
+html.cc-dark img,
+html.cc-dark video,
+html.cc-dark .city-illustration,
+html.cc-dark .profile-avatar {
+    filter: invert(0.92) hue-rotate(180deg);
+}
+
+html.cc-dark {
+    color-scheme: dark;
+}
+
+html.cc-reduce-motion *,
+html.cc-reduce-motion *::before,
+html.cc-reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+
+/* ---------- Profile completeness ---------- */
+
+.cc-complete {
+    margin: -8px 0 26px;
+}
+
+.cc-complete-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e3ecf0;
+}
+
+.cc-complete-bar {
+    width: 0;
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #008b8b, #2fb59b);
+    transition: width 0.4s ease;
+}
+
+.cc-complete-text {
+    margin: 9px 0 0;
+    color: #66758a;
+    font-size: 13px;
+}
+
+
+/* ---------- Settings section (profile page) ---------- */
+
+.cc-settings-intro {
+    margin: -8px 0 24px;
+    color: #66758a;
+    line-height: 1.6;
+}
+
+.cc-group {
+    padding: 22px 0;
+    border-top: 1px solid #e6edf1;
+}
+
+.cc-group:first-of-type {
+    border-top: 0;
+    padding-top: 4px;
+}
+
+.cc-group h4 {
+    margin: 0 0 6px;
+    color: #173653;
+    font-size: 17px;
+}
+
+.cc-group > p {
+    margin: 0 0 16px;
+    color: #66758a;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.cc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 10px 0;
+}
+
+.cc-row > label,
+.cc-row > .cc-row-label {
+    color: #173653;
+    font-weight: 600;
+}
+
+.cc-row small {
+    display: block;
+    margin-top: 3px;
+    color: #7a889c;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.cc-segmented {
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 11px;
+    background: #eaf0f3;
+}
+
+.cc-segmented button {
+    min-width: 76px;
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #5d6d85;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cc-segmented button[aria-pressed="true"] {
+    background: #ffffff;
+    color: #006f70;
+    box-shadow: 0 2px 6px rgba(30, 50, 70, 0.1);
+}
+
+.cc-slider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: min(100%, 260px);
+}
+
+.cc-slider input[type="range"] {
+    flex: 1;
+    accent-color: #008b8b;
+}
+
+.cc-slider output {
+    min-width: 46px;
+    color: #173653;
+    font-weight: 700;
+    text-align: right;
+}
+
+.cc-select {
+    min-width: 190px;
+    padding: 11px 13px;
+    border: 1px solid #d7e2eb;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #173653;
+    font: inherit;
+}
+
+.cc-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.cc-switch input {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.cc-switch span {
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    background: #c5d1da;
+    transition: background 0.2s ease;
+}
+
+.cc-switch span::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.cc-switch input:checked + span {
+    background: #008b8b;
+}
+
+.cc-switch input:checked + span::after {
+    transform: translateX(22px);
+}
+
+.cc-switch input:focus-visible + span {
+    outline: 3px solid #8bd5ce;
+    outline-offset: 2px;
+}
+
+.cc-form {
+    display: grid;
+    gap: 14px;
+    max-width: 440px;
+}
+
+.cc-form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #173653;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cc-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d7e2eb;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #173653;
+    font: inherit;
+}
+
+.cc-form input:focus,
+.cc-select:focus {
+    outline: 2px solid #8bd5ce;
+    border-color: #008b8b;
+}
+
+.cc-button {
+    display: inline-block;
+    width: fit-content;
+    padding: 12px 20px;
+    border: 1px solid #008b8b;
+    border-radius: 9px;
+    background: #008b8b;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cc-button:hover {
+    background: #006f70;
+}
+
+.cc-button.secondary {
+    background: #ffffff;
+    color: #008b8b;
+}
+
+.cc-button.secondary:hover {
+    background: #e9f7f5;
+}
+
+.cc-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cc-note {
+    min-height: 20px;
+    margin: 12px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cc-note.ok {
+    color: #087b57;
+}
+
+.cc-note.error {
+    color: #c0362c;
+}
+
+
+/* ---------- FAQ ---------- */
+
+.cc-faq details {
+    margin-bottom: 10px;
+    border: 1px solid #e0e8ee;
+    border-radius: 11px;
+    background: #f8fbfc;
+}
+
+.cc-faq summary {
+    padding: 14px 16px;
+    color: #173653;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cc-faq details[open] summary {
+    border-bottom: 1px solid #e0e8ee;
+}
+
+.cc-faq details p {
+    margin: 0;
+    padding: 14px 16px;
+    color: #52657a;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.cc-about {
+    margin: 18px 0 0;
+    color: #7a889c;
+    font-size: 12px;
+}
+
+
+/* ---------- Help assistant ---------- */
+
+.cc-bot-button {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 9998;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border: 0;
+    border-radius: 50%;
+    background: #008b8b;
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(0, 80, 80, 0.32);
+    font-size: 25px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cc-bot-button:hover {
+    background: #006f70;
+    transform: translateY(-2px);
+}
+
+.cc-bot-button:focus-visible,
+.cc-bot button:focus-visible {
+    outline: 3px solid #8bd5ce;
+    outline-offset: 3px;
+}
+
+.cc-bot {
+    position: fixed;
+    right: 22px;
+    bottom: 90px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    width: min(370px, calc(100vw - 28px));
+    height: min(540px, calc(100vh - 120px));
+    overflow: hidden;
+    border: 1px solid #dbe5ea;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 18px 50px rgba(20, 45, 70, 0.22);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.cc-bot[hidden] {
+    display: none;
+}
+
+.cc-bot-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 15px 16px;
+    background: linear-gradient(120deg, #0d6b6b, #139a86);
+    color: #ffffff;
+}
+
+.cc-bot-head strong {
+    display: block;
+    font-size: 15px;
+}
+
+.cc-bot-head span {
+    display: block;
+    margin-top: 2px;
+    color: #cdeee8;
+    font-size: 11px;
+}
+
+.cc-bot-close {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.cc-bot-messages {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    overflow-y: auto;
+    background: #f5f9fa;
+}
+
+.cc-msg {
+    max-width: 86%;
+    padding: 10px 13px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.cc-msg.bot {
+    align-self: flex-start;
+    border: 1px solid #e0e8ee;
+    border-bottom-left-radius: 4px;
+    background: #ffffff;
+    color: #173653;
+}
+
+.cc-msg.user {
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    background: #008b8b;
+    color: #ffffff;
+}
+
+.cc-msg a {
+    color: #006f70;
+    font-weight: 700;
+}
+
+.cc-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 10px 14px 0;
+    background: #ffffff;
+}
+
+.cc-chips button {
+    padding: 7px 11px;
+    border: 1px solid #bfe0dc;
+    border-radius: 20px;
+    background: #f0faf8;
+    color: #00706f;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cc-chips button:hover {
+    background: #dff3ef;
+}
+
+.cc-bot-form {
+    display: flex;
+    gap: 8px;
+    padding: 12px 14px 14px;
+    background: #ffffff;
+}
+
+.cc-bot-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 13px;
+    border: 1px solid #d7e2eb;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 14px;
+}
+
+.cc-bot-form input:focus {
+    outline: 2px solid #8bd5ce;
+    border-color: #008b8b;
+}
+
+.cc-bot-form button {
+    padding: 0 16px;
+    border: 0;
+    border-radius: 10px;
+    background: #008b8b;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cc-bot-foot {
+    padding: 0 14px 12px;
+    background: #ffffff;
+    color: #8a97a8;
+    font-size: 11px;
+}
+
+@media (max-width: 600px) {
+    .cc-bot-button {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .cc-bot {
+        right: 14px;
+        bottom: 80px;
+    }
+
+    .cc-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

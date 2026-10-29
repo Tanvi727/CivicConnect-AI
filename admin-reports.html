@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CivicConnect <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-reports.html" class="active">Reports</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="#" id="adminLogout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+
+        <div class="admin-head">
+            <div>
+                <h1>All Reports</h1>
+                <p>Search, filter and update the status of every report.</p>
+            </div>
+        </div>
+
+        <section class="admin-card">
+
+            <div class="admin-filters">
+                <input type="search" id="fSearch" placeholder="Search title, ID, location or citizen">
+
+                <select id="fStatus">
+                    <option value="">All statuses</option>
+                    <option>Submitted</option>
+                    <option>Under Review</option>
+                    <option>In Progress</option>
+                    <option>Resolved</option>
+                </select>
+
+                <select id="fCategory"><option value="">All categories</option></select>
+
+                <select id="fPriority">
+                    <option value="">All priorities</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="reportsTable"></table>
+            </div>
+            <div id="tableMessage" class="admin-empty">Loading...</div>
+
+            <div class="admin-pager">
+                <span id="pagerText"></span>
+                <span>
+                    <button class="admin-btn secondary" id="prevPage" type="button">Previous</button>
+                    <button class="admin-btn secondary" id="nextPage" type="button">Next</button>
+                </span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        (function () {
+            if (!window.AdminUI) return;
+
+            var PAGE_SIZE = 20;
+            var page = 1;
+            var total = 0;
+            var timer = null;
+
+            var table = document.getElementById("reportsTable");
+            var message = document.getElementById("tableMessage");
+            var pagerText = document.getElementById("pagerText");
+            var prev = document.getElementById("prevPage");
+            var next = document.getElementById("nextPage");
+
+            function value(id) { return document.getElementById(id).value; }
+
+            function load() {
+                CivicAPI.adminReports({
+                    q: value("fSearch").trim(),
+                    status: value("fStatus"),
+                    category: value("fCategory"),
+                    priority: value("fPriority"),
+                    page: page,
+                    pageSize: PAGE_SIZE
+                }).then(function (result) {
+                    total = result.total;
+
+                    if (!result.items.length) {
+                        table.replaceChildren();
+                        message.hidden = false;
+                        message.className = "admin-empty";
+                        message.textContent = "No reports match these filters.";
+                    } else {
+                        message.hidden = true;
+                        AdminUI.reportTable(table, result.items, { editable: true });
+                    }
+
+                    var pages = Math.max(Math.ceil(total / PAGE_SIZE), 1);
+
+                    pagerText.textContent = total + " report(s) · page " + page + " of " + pages;
+                    prev.disabled = page <= 1;
+                    next.disabled = page >= pages;
+                }).catch(function (error) {
+                    table.replaceChildren();
+                    message.hidden = false;
+                    message.className = "admin-error";
+                    message.textContent = error.message;
+                });
+            }
+
+            function reload() { page = 1; load(); }
+
+            ["fStatus", "fCategory", "fPriority"].forEach(function (id) {
+                document.getElementById(id).addEventListener("change", reload);
+            });
+
+            document.getElementById("fSearch").addEventListener("input", function () {
+                clearTimeout(timer);
+                timer = setTimeout(reload, 300);
+            });
+
+            prev.addEventListener("click", function () { page--; load(); });
+            next.addEventListener("click", function () { page++; load(); });
+
+            CivicAPI.meta().then(function (meta) {
+                var select = document.getElementById("fCategory");
+
+                meta.categories.forEach(function (name) {
+                    var option = document.createElement("option");
+
+                    option.textContent = name;
+                    select.appendChild(option);
+                });
+            }).catch(function () {});
+
+            load();
+        })();
+    </script>
+    <script src="extras.js"></script>
+
+</body>
+
+</html>

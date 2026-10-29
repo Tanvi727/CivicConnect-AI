@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Citizen Dashboard | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="citizen-dashboard.css">
+    <link rel="stylesheet" href="extras.css">
+</head>
+
+<body class="citizen-dashboard-page">
+
+    <!-- NAVIGATION -->
+    <nav class="cd-navbar">
+
+        <a href="index.html" class="cd-logo">
+            <span class="cd-logo-icon">C</span>
+            <span>CivicConnect <strong>AI</strong></span>
+        </a>
+
+        <div class="cd-nav-links">
+            <a href="citizen-dashboard.html" class="active">Dashboard</a>
+            <a href="report.html">Report Issue</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="profile.html">My Profile</a>
+            
+            <a href="index.html" id="logoutButton" class="login-link">
+    Logout
+</a>
+        </div>
+
+    </nav>
+
+
+    <main class="cd-container">
+
+        <!-- WELCOME SECTION -->
+        <section class="cd-welcome">
+
+            <div class="cd-welcome-content">
+
+                <span class="cd-eyebrow">
+                    YOUR CIVICCONNECT DASHBOARD
+                </span>
+
+                <h1 id="cdWelcomeName">Welcome back!</h1>
+
+                <p>
+                    Every voice matters. Track your civic reports,
+                    follow their progress, and help make your city
+                    cleaner, safer, and better.
+                </p>
+
+            </div>
+
+            <a href="report.html" class="cd-primary-button">
+                + Report an Issue
+            </a>
+
+        </section>
+
+
+        <!-- REPORT STATISTICS -->
+        <section class="cd-statistics">
+
+            <article class="cd-stat-card">
+
+                <div class="cd-stat-top">
+                    <span class="cd-stat-icon blue">📋</span>
+                    <span class="cd-stat-caption">ALL REPORTS</span>
+                </div>
+
+                <h2 id="cdTotalReports">0</h2>
+
+                <p>Total Reports</p>
+
+                <span class="cd-stat-description">
+                    Your submitted civic issues
+                </span>
+
+            </article>
+
+
+            <article class="cd-stat-card">
+
+                <div class="cd-stat-top">
+                    <span class="cd-stat-icon amber">🔍</span>
+                    <span class="cd-stat-caption">IN REVIEW</span>
+                </div>
+
+                <h2 id="cdReviewReports">0</h2>
+
+                <p>Under Review</p>
+
+                <span class="cd-stat-description">
+                    Reports awaiting action
+                </span>
+
+            </article>
+
+
+            <article class="cd-stat-card">
+
+                <div class="cd-stat-top">
+                    <span class="cd-stat-icon violet">🛠️</span>
+                    <span class="cd-stat-caption">ONGOING</span>
+                </div>
+
+                <h2 id="cdProgressReports">0</h2>
+
+                <p>In Progress</p>
+
+                <span class="cd-stat-description">
+                    Issues being addressed
+                </span>
+
+            </article>
+
+
+            <article class="cd-stat-card">
+
+                <div class="cd-stat-top">
+                    <span class="cd-stat-icon green">✓</span>
+                    <span class="cd-stat-caption">COMPLETED</span>
+                </div>
+
+                <h2 id="cdResolvedReports">0</h2>
+
+                <p>Resolved</p>
+
+                <span class="cd-stat-description">
+                    Issues marked resolved
+                </span>
+
+            </article>
+
+        </section>
+
+
+        <!-- RECENT REPORTS AND QUICK ACTIONS -->
+        <section class="cd-main-grid">
+
+            <!-- RECENT REPORTS -->
+            <div class="cd-panel">
+
+                <div class="cd-section-heading">
+
+                    <div>
+                        <span class="cd-section-label">
+                            YOUR ACTIVITY
+                        </span>
+
+                        <h2>My Recent Reports</h2>
+
+                        <p>
+                            Keep track of your latest civic complaints.
+                        </p>
+                    </div>
+
+                    <a href="my-reports.html" class="cd-text-link">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                <div id="cdRecentReports" class="cd-recent-reports">
+
+                    <div class="cd-empty-state">
+                        Loading your reports...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+            <div class="cd-panel">
+
+                <div class="cd-section-heading">
+
+                    <div>
+                        <span class="cd-section-label">
+                            GET THINGS DONE
+                        </span>
+
+                        <h2>Quick Actions</h2>
+
+                        <p>
+                            Access your most-used features.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <a href="report.html" class="cd-action">
+
+                    <span class="cd-action-icon">📝</span>
+
+                    <span class="cd-action-text">
+                        <strong>Report an Issue</strong>
+
+                        <small>
+                            Submit a new civic complaint.
+                        </small>
+                    </span>
+
+                    <span class="cd-action-arrow">→</span>
+
+                </a>
+
+
+                <a href="my-reports.html" class="cd-action">
+
+                    <span class="cd-action-icon">📍</span>
+
+                    <span class="cd-action-text">
+                        <strong>Track My Reports</strong>
+
+                        <small>
+                            Check your complaint status.
+                        </small>
+                    </span>
+
+                    <span class="cd-action-arrow">→</span>
+
+                </a>
+
+
+                <a href="profile.html" class="cd-action">
+
+                    <span class="cd-action-icon">👤</span>
+
+                    <span class="cd-action-text">
+                        <strong>My Profile</strong>
+
+                        <small>
+                            Manage your account information.
+                        </small>
+                    </span>
+
+                    <span class="cd-action-arrow">→</span>
+
+                </a>
+
+
+                <a href="profile.html#settings" class="cd-action">
+
+                    <span class="cd-action-icon">⚙️</span>
+
+                    <span class="cd-action-text">
+                        <strong>Settings &amp; Help</strong>
+
+                        <small>
+                            Theme, language, password and help.
+                        </small>
+                    </span>
+
+                    <span class="cd-action-arrow">→</span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMMUNITY BANNER -->
+        <section class="cd-community">
+
+            <div>
+
+                <span class="cd-section-label">
+                    TOGETHER FOR A BETTER CITY
+                </span>
+
+                <h2>
+                    Small actions create a better community.
+                </h2>
+
+                <p>
+                    Your voice matters. Every civic issue reported
+                    is a step towards cleaner, safer public spaces.
+                    Together, we can make a difference.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="cd-footer">
+
+        <p>
+            © 2026 CivicConnect AI.
+            Building better communities together.
+        </p>
+
+    </footer>
+
+
+    <!-- DASHBOARD JAVASCRIPT -->
+    <script src="api.js"></script>
+    <script src="citizen-dashboard.js"></script>
+
+    <script src="extras.js"></script>
+
+</body>
+</html>

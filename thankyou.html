@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Submitted | CivicConnect AI</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="extras.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CivicConnect <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="citizen-dashboard.html">Dashboard</a>
+            <a href="report.html">Report Issue</a>
+            <a href="my-reports.html">My Reports</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <a href="#" id="logoutButton">Logout</a>
+    </nav>
+
+    <main>
+        <div class="thanks-box">
+            <div class="tick">✓</div>
+            <h1>Report submitted</h1>
+            <p>Thank you for helping improve your city. Our team will review your report soon.</p>
+            <div class="thanks-id" id="reportId"></div>
+            <p>Keep this ID to track progress anytime.</p>
+
+            <div class="thanks-actions" style="margin-top:20px">
+                <a class="admin-btn" id="trackLink" href="my-reports.html">Track this report</a>
+                <a class="admin-btn secondary" href="report.html">Report another issue</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+    <script>
+        (function () {
+            var id = new URLSearchParams(window.location.search).get("id") || "";
+
+            if (/^CCA-\d+$/.test(id)) {
+                document.getElementById("reportId").textContent = "Report ID: " + id;
+                document.getElementById("trackLink").href =
+                    "report-details.html?id=" + encodeURIComponent(id);
+            }
+        })();
+    </script>
+    <script src="extras.js"></script>
+
+</body>
+
+</html>
